@@ -755,34 +755,73 @@
           <div><h4>Try it live now</h4><p>Use the reception, doctor and patient links above — no signup needed to explore.</p></div>
         </div>
       </div>
-      <form class="reveal" onsubmit="event.preventDefault(); this.querySelector('.note-success').style.display='block'; this.reset();">
+      <form class="reveal" id="demoForm">
+        <input type="hidden" name="access_key" value="166eecb7-1bf0-4ff4-a4ab-a67a628a252b">
+        <input type="hidden" name="subject" value="New demo request — Smart Queue website">
+        <input type="hidden" name="from_name" value="Smart Queue Website">
         <div class="field">
           <label for="hname">Hospital name</label>
-          <input id="hname" type="text" placeholder="e.g. Sri Ram Multispeciality Hospital" required>
+          <input id="hname" name="hospital_name" type="text" placeholder="e.g. Sri Ram Multispeciality Hospital" required>
         </div>
         <div class="field">
           <label for="cname">Your name</label>
-          <input id="cname" type="text" placeholder="Full name" required>
+          <input id="cname" name="name" type="text" placeholder="Full name" required>
         </div>
         <div class="field">
           <label for="phone">Phone number</label>
-          <input id="phone" type="tel" placeholder="+91" required>
+          <input id="phone" name="phone" type="tel" placeholder="+91" required>
         </div>
         <div class="field">
           <label for="size">Approx. OPD patients per day</label>
-          <select id="size">
+          <select id="size" name="opd_size">
             <option>Under 50</option>
             <option>50–150</option>
             <option>150–300</option>
             <option>300+</option>
           </select>
         </div>
-        <button type="submit" class="btn btn-primary">Request a demo</button>
+        <button type="submit" class="btn btn-primary" id="demoFormBtn">Request a demo</button>
         <p class="note note-success" style="display:none;color:var(--primary);font-weight:600;">Thanks — we'll reach out shortly.</p>
-        <p class="note">This form is a placeholder. Connect it to email, WhatsApp or a sheet before publishing. <!-- EDIT --></p>
+        <p class="note note-error" style="display:none;color:var(--accent);font-weight:600;">Something went wrong. Please try again or email us directly.</p>
       </form>
     </div>
   </div>
+
+  <script>
+    document.getElementById('demoForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      const form = e.target;
+      const btn = document.getElementById('demoFormBtn');
+      const successMsg = form.querySelector('.note-success');
+      const errorMsg = form.querySelector('.note-error');
+      successMsg.style.display = 'none';
+      errorMsg.style.display = 'none';
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
+
+      fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(Object.fromEntries(new FormData(form)))
+      })
+      .then(res => res.json())
+      .then(data => {
+        btn.disabled = false;
+        btn.textContent = 'Request a demo';
+        if (data.success) {
+          successMsg.style.display = 'block';
+          form.reset();
+        } else {
+          errorMsg.style.display = 'block';
+        }
+      })
+      .catch(() => {
+        btn.disabled = false;
+        btn.textContent = 'Request a demo';
+        errorMsg.style.display = 'block';
+      });
+    });
+  </script>
 </section>
 
 <footer>
