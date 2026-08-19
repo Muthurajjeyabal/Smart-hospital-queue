@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Smart Queue — Hospital Time Management</title>
+<meta name="description" content="Real-time queue management for hospitals. Reception, doctor and patient views stay in sync — no more paper tokens, no more crowded waiting rooms." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F5F7F6;
+    --paper:#FFFFFF;
+    --ink:#0E2A2E;
+    --muted:#52706A;
+    --line:#D8E2DF;
+    --primary:#0F6E5C;
+    --primary-dark:#0A4A3D;
+    --primary-light:#E5F1EC;
+    --accent:#FF5B35;
+    --board:#0B1F22;
+    --board-tile:#12302F;
+    --board-tile-line:#1E4642;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{font-family:'Space Grotesk',system-ui,sans-serif;}
+  .mono{font-family:'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums;}
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 24px;}
+  .eyebrow{
+    font-size:12.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--primary);display:inline-flex;align-items:center;gap:8px;
+  }
+  .eyebrow::before{content:'';width:16px;height:1.5px;background:var(--primary);display:inline-block;}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    padding:13px 24px;border-radius:999px;font-weight:600;font-size:15px;
+    border:1px solid transparent;cursor:pointer;transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+    white-space:nowrap;
+  }
+  .btn:active{transform:scale(.97);}
+  .btn-primary{background:var(--primary);color:#fff;box-shadow:0 8px 20px -8px rgba(15,110,92,.55);}
+  .btn-primary:hover{background:var(--primary-dark);}
+  .btn-ghost{background:transparent;color:var(--ink);border-color:var(--line);}
+  .btn-ghost:hover{border-color:var(--primary);color:var(--primary);}
+  .btn-light{background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.25);}
+  .btn-light:hover{background:rgba(255,255,255,.18);}
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(245,247,246,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;height:72px;}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px;}
+  .logo-mark{
+    width:32px;height:32px;border-radius:9px;background:var(--primary);
+    display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;
+  }
+  .nav-links{display:flex;align-items:center;gap:32px;font-size:14.5px;font-weight:500;color:var(--muted);}
+  .nav-links a:hover{color:var(--ink);}
+  .nav-cta{display:flex;align-items:center;gap:12px;}
+  .nav-toggle{display:none;background:none;border:none;cursor:pointer;padding:8px;}
+  .nav-toggle span{display:block;width:22px;height:2px;background:var(--ink);margin:5px 0;border-radius:2px;}
+  @media (max-width:860px){
+    .nav-links{display:none;}
+    .nav-cta .btn-ghost{display:none;}
+    .nav-toggle{display:block;}
+  }
+
+  /* ---------- Hero / split-flap board ---------- */
+  .hero{
+    background:radial-gradient(120% 140% at 20% -10%, #123632 0%, var(--board) 55%);
+    color:#fff;padding:64px 0 0;position:relative;overflow:hidden;
+  }
+  .hero-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:center;padding-bottom:56px;}
+  @media (max-width:980px){.hero-grid{grid-template-columns:1fr;gap:40px;}}
+  .hero h1{font-size:clamp(2.1rem,4.4vw,3.4rem);line-height:1.08;font-weight:700;letter-spacing:-0.01em;margin:18px 0 20px;}
+  .hero h1 em{font-style:normal;color:#7FE0C4;}
+  .hero p.lead{font-size:17px;line-height:1.65;color:#B9CFCA;max-width:480px;margin-bottom:30px;}
+  .hero .eyebrow{color:#7FE0C4;}
+  .hero .eyebrow::before{background:#7FE0C4;}
+  .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:36px;}
+  .hero-tamil{font-size:14px;color:#7FA69D;}
+
+  .board{
+    background:var(--board-tile);
+    border:1px solid var(--board-tile-line);
+    border-radius:18px;padding:22px;box-shadow:0 30px 60px -20px rgba(0,0,0,.5);
+  }
+  .board-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding:0 4px;}
+  .board-head .label{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#7FA69D;font-weight:600;}
+  .live-dot{width:7px;height:7px;border-radius:50%;background:#7FE0C4;display:inline-block;margin-right:6px;position:relative;}
+  .live-dot::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:1px solid #7FE0C4;animation:pulse 1.8s ease-out infinite;}
+  @keyframes pulse{0%{transform:scale(.6);opacity:.9;}100%{transform:scale(2.1);opacity:0;}}
+  .flap-row{
+    display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;
+    padding:12px 10px;border-top:1px solid var(--board-tile-line);
+  }
+  .flap-row:first-of-type{border-top:none;}
+  .flap-name{font-size:13.5px;color:#DCEDE8;}
+  .flap-name span{display:block;font-size:11px;color:#6E9A91;margin-top:2px;}
+  .flap-tile{
+    background:#0B1F22;border:1px solid var(--board-tile-line);border-radius:8px;
+    padding:8px 10px;min-width:56px;text-align:center;font-size:20px;font-weight:600;color:#7FE0C4;
+    perspective:200px;
+  }
+  .flap-tile .digits{display:inline-block;transition:opacity .15s ease;}
+  .flap-tile.flip .digits{animation:flipnum .35s ease;}
+  @keyframes flipnum{0%{opacity:0;transform:rotateX(70deg);}100%{opacity:1;transform:rotateX(0);}}
+  .flap-status{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#7FA69D;text-align:right;}
+  .flap-status.now{color:#7FE0C4;}
+
+  /* ---------- Stats strip ---------- */
+  .stats-strip{background:var(--paper);border-bottom:1px solid var(--line);}
+  .stats-inner{display:grid;grid-template-columns:repeat(3,1fr);gap:0;}
+  .stat-cell{padding:28px 24px;text-align:center;border-left:1px solid var(--line);}
+  .stat-cell:first-child{border-left:none;}
+  .stat-cell .num{font-family:'Space Grotesk';font-size:1.8rem;font-weight:700;color:var(--primary);}
+  .stat-cell .cap{font-size:13px;color:var(--muted);margin-top:4px;}
+  @media (max-width:700px){.stats-inner{grid-template-columns:1fr;}.stat-cell{border-left:none;border-top:1px solid var(--line);}.stat-cell:first-child{border-top:none;}}
+
+  /* ---------- Section shell ---------- */
+  section{padding:88px 0;}
+  .section-head{max-width:620px;margin-bottom:52px;}
+  .section-head h2{font-size:clamp(1.6rem,3vw,2.3rem);margin-top:14px;line-height:1.2;letter-spacing:-.01em;}
+  .section-head p{color:var(--muted);font-size:15.5px;margin-top:14px;line-height:1.6;}
+
+  /* ---------- Problem cards ---------- */
+  .problem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  @media (max-width:860px){.problem-grid{grid-template-columns:1fr;}}
+  .problem-card{
+    background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
+    padding:28px 24px;position:relative;
+  }
+  .problem-card .tag{
+    display:inline-block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--accent);background:#FFF0EB;padding:4px 10px;border-radius:999px;margin-bottom:16px;
+  }
+  .problem-card h3{font-size:17px;margin-bottom:8px;}
+  .problem-card p{font-size:14.5px;color:var(--muted);line-height:1.6;}
+
+  /* ---------- How it works ---------- */
+  .roles{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  @media (max-width:900px){.roles{grid-template-columns:1fr;}}
+  .role-card{
+    background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
+    overflow:hidden;display:flex;flex-direction:column;
+  }
+  .role-top{padding:26px 24px 20px;}
+  .role-icon{
+    width:44px;height:44px;border-radius:12px;background:var(--primary-light);color:var(--primary);
+    display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:20px;font-weight:700;
+  }
+  .role-card h3{font-size:18px;margin-bottom:8px;}
+  .role-card p{font-size:14.5px;color:var(--muted);line-height:1.6;margin-bottom:18px;}
+  .role-list{list-style:none;font-size:13.5px;color:var(--ink);}
+  .role-list li{display:flex;gap:8px;padding:5px 0;}
+  .role-list li::before{content:'—';color:var(--primary);flex-shrink:0;}
+  .role-foot{
+    margin-top:auto;padding:16px 24px;border-top:1px solid var(--line);
+    display:flex;align-items:center;justify-content:space-between;background:#FAFCFB;
+  }
+  .role-foot a{font-size:13.5px;font-weight:600;color:var(--primary);display:flex;align-items:center;gap:6px;}
+
+  /* ---------- Features ---------- */
+  .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;}
+  @media (max-width:860px){.features-grid{grid-template-columns:1fr;}}
+  .feature{background:var(--paper);padding:28px 24px;}
+  .feature .num{font-family:'IBM Plex Mono';font-size:12px;color:var(--primary);font-weight:600;margin-bottom:14px;display:block;}
+  .feature h3{font-size:16px;margin-bottom:8px;}
+  .feature p{font-size:14px;color:var(--muted);line-height:1.6;}
+
+  /* ---------- CTA band ---------- */
+  .cta-band{
+    background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);
+    border-radius:24px;padding:52px 44px;color:#fff;
+    display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;
+  }
+  .cta-band h2{font-size:1.7rem;margin-bottom:8px;}
+  .cta-band p{color:#CFE7DF;font-size:14.5px;max-width:420px;}
+  .cta-band .btn-primary{background:#fff;color:var(--primary-dark);}
+  .cta-band .btn-primary:hover{background:#EFF7F4;}
+
+  /* ---------- Contact ---------- */
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;}
+  @media (max-width:900px){.contact-grid{grid-template-columns:1fr;}}
+  .contact-info .item{display:flex;gap:14px;padding:16px 0;border-top:1px solid var(--line);}
+  .contact-info .item:first-child{border-top:none;}
+  .contact-info .item .ic{
+    width:38px;height:38px;border-radius:10px;background:var(--primary-light);color:var(--primary);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:700;font-size:14px;
+  }
+  .contact-info .item h4{font-size:14.5px;margin-bottom:2px;}
+  .contact-info .item p{font-size:13.5px;color:var(--muted);}
+  form{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:28px;}
+  .field{margin-bottom:16px;}
+  .field label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:var(--ink);}
+  .field input,.field select{
+    width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:9px;font-size:14px;
+    font-family:inherit;background:#FAFCFB;
+  }
+  .field input:focus,.field select:focus{outline:2px solid var(--primary);outline-offset:1px;border-color:transparent;}
+  form .btn-primary{width:100%;margin-top:4px;}
+  .note{font-size:12px;color:var(--muted);margin-top:12px;text-align:center;}
+
+  /* ---------- Footer ---------- */
+  footer{border-top:1px solid var(--line);padding:40px 0;}
+  .foot-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+  .foot-links{display:flex;gap:22px;font-size:13.5px;color:var(--muted);}
+  .foot-links a:hover{color:var(--primary);}
+  .copyright{font-size:12.5px;color:var(--muted);}
+
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease, transform .6s ease;}
+  .reveal.in{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <div class="logo">
+      <span class="logo-mark">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      </span>
+      Smart Queue
+    </div>
+    <nav class="nav-links">
+      <a href="#problem">Why it matters</a>
+      <a href="#how">How it works</a>
+      <a href="#features">Features</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="#contact" class="btn btn-ghost">Talk to us</a>
+      <a href="#contact" class="btn btn-primary">Book a demo</a>
+    </div>
+    <button class="nav-toggle" aria-label="Menu" onclick="document.getElementById('mnav').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div id="mnav" class="wrap" style="display:none;padding-bottom:16px;">
+    <div style="display:flex;flex-direction:column;gap:14px;font-size:15px;font-weight:500;">
+      <a href="#problem">Why it matters</a>
+      <a href="#how">How it works</a>
+      <a href="#features">Features</a>
+      <a href="#contact" class="btn btn-primary" style="margin-top:6px;">Book a demo</a>
+    </div>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero" style="padding-top:64px;">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Smart Queue for hospitals</span>
+      <h1>Waiting rooms are where hospitals lose the most time. <em>We give it back.</em></h1>
+      <p class="lead">Reception, doctors and patients see the same live queue — no paper tokens, no shouting names, no guessing how long the wait is. Set up in an afternoon, no IT team required.</p>
+      <div class="hero-ctas">
+        <a href="#contact" class="btn btn-primary">Book a free demo</a>
+        <a href="#how" class="btn btn-light">See how it works ↓</a>
+      </div>
+      <p class="hero-tamil">வரிசையில் காத்திருப்பு இல்லாம — reception, doctor, patient எல்லாருக்கும் ஒரே நேரத்தில் தகவல்.</p>
+    </div>
+
+    <div class="board" id="board">
+      <div class="board-head">
+        <span class="label"><span class="live-dot"></span>Live queue</span>
+        <span class="label mono">TODAY</span>
+      </div>
+      <div class="flap-row">
+        <div class="flap-name">Dr. Meena Rajan <span>General OPD · Room 3</span></div>
+        <div class="flap-tile" data-flap><span class="digits">042</span></div>
+        <div class="flap-status now">Now serving</div>
+      </div>
+      <div class="flap-row">
+        <div class="flap-name">Dr. Arvind Kumar <span>Orthopedics · Room 5</span></div>
+        <div class="flap-tile" data-flap><span class="digits">017</span></div>
+        <div class="flap-status">Up next</div>
+      </div>
+      <div class="flap-row">
+        <div class="flap-name">Reception <span>Tokens issued today</span></div>
+        <div class="flap-tile" data-flap><span class="digits">118</span></div>
+        <div class="flap-status">Waiting: 9</div>
+      </div>
+      <div class="flap-row">
+        <div class="flap-name">Avg. wait per patient <span>Across all doctors</span></div>
+        <div class="flap-tile" data-flap><span class="digits">11m</span></div>
+        <div class="flap-status">Updated live</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="stats-strip">
+  <div class="wrap stats-inner">
+    <div class="stat-cell"><div class="num">3</div><div class="cap">Views in sync — reception, doctor, patient</div></div>
+    <div class="stat-cell"><div class="num">0</div><div class="cap">Apps to install — works in any browser</div></div>
+    <div class="stat-cell"><div class="num">Live</div><div class="cap">Queue updates the moment a token moves</div></div>
+  </div>
+</div>
+
+<!-- ================= PROBLEM ================= -->
+<section id="problem">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">The old way</span>
+      <h2>Paper tokens weren't built for a busy OPD</h2>
+      <p>Most hospitals still run queues on paper slips, a shouted name, or a WhatsApp guess. It works — until the waiting room fills up.</p>
+    </div>
+    <div class="problem-grid">
+      <div class="problem-card reveal">
+        <span class="tag">Reception</span>
+        <h3>No visibility into doctor pace</h3>
+        <p>Reception hands out tokens without knowing how far behind (or ahead) a doctor is running — so every patient asks "how long more?"</p>
+      </div>
+      <div class="problem-card reveal">
+        <span class="tag">Doctor</span>
+        <h3>Interruptions break the rhythm</h3>
+        <p>Doctors lose minutes per patient to staff walking in with the next file, or checking who's actually outside the door.</p>
+      </div>
+      <div class="problem-card reveal">
+        <span class="tag">Patient</span>
+        <h3>Waiting rooms overcrowd</h3>
+        <p>Without a real wait estimate, every patient arrives early and stays put — filling benches that could stay empty until it's their turn.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= HOW IT WORKS ================= -->
+<section id="how" style="background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line);">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">How it works</span>
+      <h2>One queue. Three screens. Always in sync.</h2>
+      <p>Each role gets a view built for what they actually need to do — and every change reflects everywhere else, instantly.</p>
+    </div>
+    <div class="roles">
+      <div class="role-card reveal">
+        <div class="role-top">
+          <div class="role-icon">R</div>
+          <h3>Reception</h3>
+          <p>Register walk-ins in seconds, issue tokens, and flag emergencies to jump the queue without disrupting the flow.</p>
+          <ul class="role-list">
+            <li>One-tap patient registration</li>
+            <li>Emergency priority override</li>
+            <li>Live view of every doctor's queue</li>
+          </ul>
+        </div>
+        <div class="role-foot">
+          <span>Reception desk view</span>
+          <a href="https://muthurajjeyabal.github.io/Smart-queue-/reception.html" target="_blank" rel="noopener">Open view →</a>
+        </div>
+      </div>
+      <div class="role-card reveal">
+        <div class="role-top">
+          <div class="role-icon">D</div>
+          <h3>Doctor</h3>
+          <p>Start, pause, or take a break with one tap — the whole hospital sees the update immediately, no phone calls needed.</p>
+          <ul class="role-list">
+            <li>Start / next patient controls</li>
+            <li>Pause for break or emergency</li>
+            <li>Today's consultation summary</li>
+          </ul>
+        </div>
+        <div class="role-foot">
+          <span>Doctor room view</span>
+          <a href="https://muthurajjeyabal.github.io/Smart-queue-/doctor.html" target="_blank" rel="noopener">Open view →</a>
+        </div>
+      </div>
+      <div class="role-card reveal">
+        <div class="role-top">
+          <div class="role-icon">P</div>
+          <h3>Patient</h3>
+          <p>Patients track their token and estimated wait from their own phone — so they can step out instead of standing in a crowd.</p>
+          <ul class="role-list">
+            <li>Live token + queue position</li>
+            <li>Real-time wait estimate</li>
+            <li>No app download required</li>
+          </ul>
+        </div>
+        <div class="role-foot">
+          <span>Patient view</span>
+          <a href="https://muthurajjeyabal.github.io/Smart-queue-/patient.html" target="_blank" rel="noopener">Open view →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FEATURES ================= -->
+<section id="features">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Built for OPDs</span>
+      <h2>Everything a busy hospital floor actually needs</h2>
+    </div>
+    <div class="features-grid reveal">
+      <div class="feature">
+        <span class="num">01</span>
+        <h3>Real-time sync</h3>
+        <p>Every action on reception or doctor screens reflects on the patient's phone within seconds.</p>
+      </div>
+      <div class="feature">
+        <span class="num">02</span>
+        <h3>Emergency priority</h3>
+        <p>Push a critical patient to the front of the queue without resetting anyone else's position.</p>
+      </div>
+      <div class="feature">
+        <span class="num">03</span>
+        <h3>Multi-doctor support</h3>
+        <p>Run separate queues for every doctor and department from one hospital account.</p>
+      </div>
+      <div class="feature">
+        <span class="num">04</span>
+        <h3>No installation</h3>
+        <p>Runs entirely in the browser — reception, doctors and patients need nothing but a link.</p>
+      </div>
+      <div class="feature">
+        <span class="num">05</span>
+        <h3>Break & pause handling</h3>
+        <p>Doctors can pause for lunch or an emergency, and patients see an honest delay notice instead of silence.</p>
+      </div>
+      <div class="feature">
+        <span class="num">06</span>
+        <h3>Simple PIN access</h3>
+        <p>Reception and doctor logins are protected by a PIN specific to your hospital — no complex accounts to manage.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CTA BAND ================= -->
+<section style="padding-top:0;">
+  <div class="wrap">
+    <div class="cta-band reveal">
+      <div>
+        <h2>See it running on your own OPD flow</h2>
+        <p>We'll walk through reception, doctor and patient views together — takes about 15 minutes, no commitment.</p>
+      </div>
+      <a href="#contact" class="btn btn-primary">Book a free demo</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Get in touch</span>
+      <h2>Bring Smart Queue to your hospital</h2>
+      <p>Tell us a little about your hospital and we'll reach out to set up a demo at a time that works for you.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <div class="item">
+          <div class="ic">@</div>
+          <div><h4>Email</h4><p>sales@yourdomain.com <!-- EDIT: replace with your real email --></p></div>
+        </div>
+        <div class="item">
+          <div class="ic">☎</div>
+          <div><h4>Phone / WhatsApp</h4><p>+91 00000 00000 <!-- EDIT: replace with your real number --></p></div>
+        </div>
+        <div class="item">
+          <div class="ic">→</div>
+          <div><h4>Try it live now</h4><p>Use the reception, doctor and patient links above — no signup needed to explore.</p></div>
+        </div>
+      </div>
+      <form class="reveal" onsubmit="event.preventDefault(); this.querySelector('.note-success').style.display='block'; this.reset();">
+        <div class="field">
+          <label for="hname">Hospital name</label>
+          <input id="hname" type="text" placeholder="e.g. Sri Ram Multispeciality Hospital" required>
+        </div>
+        <div class="field">
+          <label for="cname">Your name</label>
+          <input id="cname" type="text" placeholder="Full name" required>
+        </div>
+        <div class="field">
+          <label for="phone">Phone number</label>
+          <input id="phone" type="tel" placeholder="+91" required>
+        </div>
+        <div class="field">
+          <label for="size">Approx. OPD patients per day</label>
+          <select id="size">
+            <option>Under 50</option>
+            <option>50–150</option>
+            <option>150–300</option>
+            <option>300+</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Request a demo</button>
+        <p class="note note-success" style="display:none;color:var(--primary);font-weight:600;">Thanks — we'll reach out shortly.</p>
+        <p class="note">This form is a placeholder. Connect it to email, WhatsApp or a sheet before publishing. <!-- EDIT --></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-inner">
+    <div class="logo" style="font-size:15px;">
+      <span class="logo-mark" style="width:26px;height:26px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      </span>
+      Smart Queue
+    </div>
+    <div class="foot-links">
+      <a href="#problem">Why it matters</a>
+      <a href="#how">How it works</a>
+      <a href="#features">Features</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="copyright">© 2026 Smart Queue. Built for hospital OPDs.</div>
+  </div>
+</footer>
+
+<script>
+  // reveal on scroll
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // mobile menu
+  const mnav = document.getElementById('mnav');
+  document.querySelectorAll('#mnav a').forEach(a=>a.addEventListener('click',()=>mnav.style.display='none'));
+
+  // split-flap board ticking animation
+  const tiles = document.querySelectorAll('[data-flap]');
+  const seqSets = [
+    ['042','043','044','045'],
+    ['017','018','019','020'],
+    ['118','119','120','121'],
+    ['11m','9m','13m','10m']
+  ];
+  const idx = [0,0,0,0];
+  function tick(){
+    tiles.forEach((tile,i)=>{
+      idx[i] = (idx[i]+1) % seqSets[i].length;
+      const span = tile.querySelector('.digits');
+      tile.classList.remove('flip');
+      void tile.offsetWidth;
+      span.textContent = seqSets[i][idx[i]];
+      tile.classList.add('flip');
+    });
+  }
+  setInterval(tick, 3200);
+
+  // mobile nav toggle class open sets flex
+  document.querySelector('.nav-toggle').addEventListener('click', ()=>{
+    mnav.style.display = mnav.style.display === 'block' ? 'none' : 'block';
+  });
+</script>
+
+</body>
+</html>
