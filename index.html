@@ -40,7 +40,7 @@
   "provider": {
     "@type": "Organization",
     "name": "Smart Queue",
-    "email": "sales@smarthospitalqueue.com"
+    "email": "hello@smarthospitalqueue.com"
   }
 }
 </script>
@@ -326,56 +326,7 @@
   .feature h3{font-size:16px;margin-bottom:8px;}
   .feature p{font-size:14px;color:var(--muted);line-height:1.6;}
 
-  /* ---------- Pricing ---------- */
-  .pricing-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;align-items:stretch;}
-  @media (max-width:1000px){.pricing-grid{grid-template-columns:1fr 1fr;}}
-  @media (max-width:620px){.pricing-grid{grid-template-columns:1fr;}}
-  .price-card{
-    background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
-    overflow:hidden;display:flex;flex-direction:column;position:relative;
-    transition:transform .25s ease, box-shadow .25s ease;
-  }
-  .price-card:hover{transform:translateY(-4px);box-shadow:0 24px 48px -22px rgba(15,110,92,.35);}
-  .price-card.featured{border-color:var(--primary);}
-  .popular-badge{
-    position:absolute;top:14px;right:14px;background:#F6C945;color:#4A3300;
-    font-size:11px;font-weight:700;letter-spacing:.04em;padding:5px 11px;border-radius:999px;z-index:2;
-  }
-  .price-head{background:var(--board);color:#fff;padding:22px 22px 18px;}
-  .price-card.featured .price-head{background:linear-gradient(135deg,#128870 0%,var(--primary-dark) 100%);}
-  .price-head h3{font-size:17px;font-weight:700;letter-spacing:.01em;}
-  .price-head p{font-size:12.5px;color:#9FB8B2;margin-top:3px;}
-  .price-card.featured .price-head p{color:#CFE7DF;}
-  .price-body{padding:22px;display:flex;flex-direction:column;flex:1;}
-  .launch-badge{
-    display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
-    color:var(--accent);background:#FFF0EB;padding:4px 10px;border-radius:999px;margin-bottom:10px;
-  }
-  .launch-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);}
-  .price-row{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:2px;}
-  .price-old{font-family:'IBM Plex Mono';font-size:15px;color:#9AA9A5;text-decoration:line-through;}
-  .price-now{font-family:'Space Grotesk';font-size:1.9rem;font-weight:700;color:var(--ink);}
-  .price-unit{font-size:13px;color:var(--muted);}
-  .price-custom{font-family:'Space Grotesk';font-size:1.7rem;font-weight:700;color:var(--ink);margin-bottom:2px;}
-  .price-list{list-style:none;font-size:13.5px;color:var(--ink);margin:18px 0 20px;flex:1;}
-  .price-list li{display:flex;gap:8px;padding:5px 0;}
-  .price-list li::before{content:'✓';color:var(--primary);font-weight:700;flex-shrink:0;}
-  .price-perks{
-    margin-top:44px;display:grid;grid-template-columns:repeat(4,1fr);gap:20px;
-    background:var(--primary-light);border-radius:var(--radius);padding:26px 30px;
-  }
-  @media (max-width:900px){.price-perks{grid-template-columns:1fr 1fr;}}
-  @media (max-width:520px){.price-perks{grid-template-columns:1fr;}}
-  .perk{display:flex;gap:14px;align-items:flex-start;}
-  .perk .ic{
-    width:38px;height:38px;border-radius:10px;background:#fff;color:var(--primary);
-    display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:700;box-shadow:0 4px 10px -4px rgba(15,110,92,.35);
-  }
-  .perk h4{font-size:14px;margin-bottom:2px;}
-  .perk p{font-size:13px;color:var(--muted);}
-  .pricing-foot-note{text-align:center;font-size:12.5px;color:var(--muted);margin-top:22px;}
-  .pricing-foot-note strong{color:var(--accent);font-weight:700;}
-
+  /* ---------- Pricing (simple CTA, no cards) ---------- */
   .pricing-cta-band{padding:96px 0;}
   .pricing-cta-inner{max-width:640px;margin:0 auto;text-align:center;}
   .pricing-cta-inner .eyebrow{justify-content:center;}
@@ -506,7 +457,7 @@
       <a href="#contact" class="btn btn-ghost">Talk to us</a>
       <a href="#contact" class="btn btn-primary">Book a demo</a>
     </div>
-    <button class="nav-toggle" aria-label="Menu" onclick="document.getElementById('mnav').classList.toggle('open')">
+    <button class="nav-toggle" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
   </div>
@@ -822,7 +773,7 @@
     <div class="cta-band reveal">
       <div>
         <h2>See it running on your own OPD flow</h2>
-        <p>We'll walk through reception, doctor and patient views together — takes about 15 minutes, no commitment.</p>
+        <p>We'll walk through reception, doctor, patient and manager views together — takes about 15 minutes, no commitment.</p>
       </div>
       <a href="#contact" class="btn btn-primary">Book a free demo</a>
     </div>
