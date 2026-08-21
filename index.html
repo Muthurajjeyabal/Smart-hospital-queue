@@ -37,11 +37,6 @@
   "operatingSystem": "Web",
   "description": "Real-time hospital queue management software with live token tracking, smart ETA, reception, doctor and patient views.",
   "url": "https://smarthospitalqueue.com/",
-  "offers": [
-    { "@type": "Offer", "name": "Starter", "price": "999", "priceCurrency": "INR", "priceValidUntil": "2027-12-31" },
-    { "@type": "Offer", "name": "Professional", "price": "2499", "priceCurrency": "INR", "priceValidUntil": "2027-12-31" },
-    { "@type": "Offer", "name": "Hospital", "price": "4999", "priceCurrency": "INR", "priceValidUntil": "2027-12-31" }
-  ],
   "provider": {
     "@type": "Organization",
     "name": "Smart Queue",
@@ -287,8 +282,9 @@
   .problem-card p{font-size:14.5px;color:var(--muted);line-height:1.6;}
 
   /* ---------- How it works ---------- */
-  .roles{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
-  @media (max-width:900px){.roles{grid-template-columns:1fr;}}
+  .roles{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+  @media (max-width:1100px){.roles{grid-template-columns:1fr 1fr;}}
+  @media (max-width:640px){.roles{grid-template-columns:1fr;}}
   .role-card{
     background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
     overflow:hidden;display:flex;flex-direction:column;transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
@@ -379,6 +375,13 @@
   .perk p{font-size:13px;color:var(--muted);}
   .pricing-foot-note{text-align:center;font-size:12.5px;color:var(--muted);margin-top:22px;}
   .pricing-foot-note strong{color:var(--accent);font-weight:700;}
+
+  .pricing-cta-band{padding:96px 0;}
+  .pricing-cta-inner{max-width:640px;margin:0 auto;text-align:center;}
+  .pricing-cta-inner .eyebrow{justify-content:center;}
+  .pricing-cta-inner h2{font-size:clamp(1.8rem,3.4vw,2.5rem);margin-top:16px;line-height:1.18;letter-spacing:-.01em;}
+  .pricing-cta-inner p{color:var(--muted);font-size:16px;line-height:1.65;margin-top:16px;}
+  .pricing-cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:32px;}
 
   /* ---------- Security & Trust ---------- */
   .security-band{background:var(--board);color:#fff;}
@@ -496,7 +499,7 @@
     <nav class="nav-links">
       <a href="#problem">Why it matters</a>
       <a href="#how">How it works</a>
-      <a href="#pricing">Pricing</a>
+      <a href="#pricing">Plans</a>
       <a href="#contact">Contact</a>
     </nav>
     <div class="nav-cta">
@@ -511,7 +514,7 @@
     <div style="display:flex;flex-direction:column;gap:14px;font-size:15px;font-weight:500;">
       <a href="#problem">Why it matters</a>
       <a href="#how">How it works</a>
-      <a href="#pricing">Pricing</a>
+      <a href="#pricing">Plans</a>
       <a href="#contact" class="btn btn-primary" style="margin-top:6px;">Book a demo</a>
     </div>
   </div>
@@ -566,7 +569,7 @@
 
 <div class="stats-strip">
   <div class="wrap stats-inner">
-    <div class="stat-cell"><div class="num">3</div><div class="cap">Views in sync — reception, doctor, patient</div></div>
+    <div class="stat-cell"><div class="num">4</div><div class="cap">Views in sync — reception, doctor, patient, manager</div></div>
     <div class="stat-cell"><div class="num">0</div><div class="cap">Apps to install — works in any browser</div></div>
     <div class="stat-cell"><div class="num">Live</div><div class="cap">Queue updates the moment a token moves</div></div>
   </div>
@@ -605,7 +608,7 @@
   <div class="wrap">
     <div class="section-head reveal">
       <span class="eyebrow">How it works</span>
-      <h2>One queue. Three screens. Always in sync.</h2>
+      <h2>One queue. Four screens. Always in sync.</h2>
       <p>Each role gets a view built for what they actually need to do — and every change reflects everywhere else, instantly.</p>
     </div>
     <div class="roles">
@@ -659,6 +662,23 @@
         <div class="role-foot">
           <span>Patient view</span>
           <a href="https://app.smarthospitalqueue.com/patient.html" target="_blank" rel="noopener">Open view →</a>
+        </div>
+      </div>
+      <div class="role-card reveal">
+        <div class="role-top">
+          <div class="role-icon">M</div>
+          <h3>Manager</h3>
+          <p>Full admin control for your hospital — set up doctors and reception staff, and see exactly who was seen and when.</p>
+          <ul class="role-list">
+            <li>Add & manage doctors and reception staff</li>
+            <li>View appointment history — see who visited, when</li>
+            <li>Reports across all doctors and departments</li>
+            <li>Reset staff PINs and hospital branding</li>
+          </ul>
+        </div>
+        <div class="role-foot">
+          <span>Manager view</span>
+          <a href="https://app.smarthospitalqueue.com/manager.html" target="_blank" rel="noopener">Open view →</a>
         </div>
       </div>
     </div>
@@ -782,123 +802,17 @@
 </section>
 
 <!-- ================= PRICING ================= -->
-<section id="pricing" style="background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line);">
+<section id="pricing" class="pricing-cta-band" style="background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line);">
   <div class="wrap">
-    <div class="section-head reveal">
+    <div class="pricing-cta-inner reveal">
       <span class="eyebrow">Pricing</span>
-      <h2>Flexible plans for every hospital</h2>
-      <p>Launch pricing is live for hospitals that sign up now — locked in for as long as you stay with us, even after prices go up.</p>
-    </div>
-
-    <div class="pricing-grid">
-      <div class="price-card reveal">
-        <div class="price-head">
-          <h3>Starter</h3>
-          <p>For small clinics</p>
-        </div>
-        <div class="price-body">
-          <span class="launch-badge">Launch price</span>
-          <div class="price-row">
-            <span class="price-old">₹1,999</span>
-            <span class="price-now">₹999</span>
-          </div>
-          <span class="price-unit">/month</span>
-          <ul class="price-list">
-            <li>1 Doctor</li>
-            <li>Live Queue</li>
-            <li>ETA &amp; Alerts</li>
-            <li>Basic Reports</li>
-          </ul>
-          <a href="#contact" class="btn btn-ghost" style="width:100%;">Book a demo</a>
-        </div>
-      </div>
-
-      <div class="price-card featured reveal">
-        <span class="popular-badge">Most Popular</span>
-        <div class="price-head">
-          <h3>Professional</h3>
-          <p>For medium hospitals</p>
-        </div>
-        <div class="price-body">
-          <span class="launch-badge">Launch price</span>
-          <div class="price-row">
-            <span class="price-old">₹4,999</span>
-            <span class="price-now">₹2,499</span>
-          </div>
-          <span class="price-unit">/month</span>
-          <ul class="price-list">
-            <li>Up to 5 Doctors</li>
-            <li>All Starter features</li>
-            <li>Appointment Management</li>
-            <li>Advanced Notifications</li>
-            <li>Detailed Reports</li>
-          </ul>
-          <a href="#contact" class="btn btn-primary" style="width:100%;">Book a demo</a>
-        </div>
-      </div>
-
-      <div class="price-card reveal">
-        <div class="price-head">
-          <h3>Hospital</h3>
-          <p>For large hospitals</p>
-        </div>
-        <div class="price-body">
-          <span class="launch-badge">Launch price</span>
-          <div class="price-row">
-            <span class="price-old">₹9,999</span>
-            <span class="price-now">₹4,999</span>
-          </div>
-          <span class="price-unit">/month</span>
-          <ul class="price-list">
-            <li>Up to 15 Doctors</li>
-            <li>Multi-Department</li>
-            <li>Advanced Analytics</li>
-            <li>Priority &amp; Emergency</li>
-            <li>Custom Branding</li>
-          </ul>
-          <a href="#contact" class="btn btn-ghost" style="width:100%;">Book a demo</a>
-        </div>
-      </div>
-
-      <div class="price-card reveal">
-        <div class="price-head">
-          <h3>Enterprise</h3>
-          <p>For multi-branch hospitals</p>
-        </div>
-        <div class="price-body">
-          <div class="price-custom">Custom</div>
-          <span class="price-unit">Pricing</span>
-          <ul class="price-list">
-            <li>Unlimited Doctors</li>
-            <li>Multi-Branch Management</li>
-            <li>API Access</li>
-            <li>Dedicated Support</li>
-            <li>Custom Integrations</li>
-          </ul>
-          <a href="#contact" class="btn btn-ghost" style="width:100%;">Talk to sales</a>
-        </div>
+      <h2>Simple. Flexible. Built Around Your Hospital.</h2>
+      <p>Talk to us about a plan that fits your hospital's size, workflow, and requirements — from a single clinic to a multi-department facility.</p>
+      <div class="pricing-cta-actions">
+        <a href="#contact" class="btn btn-primary">Book a Demo</a>
+        <a href="https://wa.me/919597899960" target="_blank" rel="noopener" class="btn btn-ghost">Talk to Sales</a>
       </div>
     </div>
-
-    <div class="price-perks reveal">
-      <div class="perk">
-        <div class="ic">⚡</div>
-        <div><h4>No Installation Fees</h4><p>Launch offer — ends Nov 1</p></div>
-      </div>
-      <div class="perk">
-        <div class="ic">🚀</div>
-        <div><h4>Easy Setup</h4><p>Quick onboarding</p></div>
-      </div>
-      <div class="perk">
-        <div class="ic">☁</div>
-        <div><h4>Secure &amp; Reliable</h4><p>Cloud platform</p></div>
-      </div>
-      <div class="perk">
-        <div class="ic">☎</div>
-        <div><h4>24/7 Support</h4><p>We are always here for you</p></div>
-      </div>
-    </div>
-    <p class="pricing-foot-note">Installation is free as a launch offer — hospitals who sign up before <strong>November 1</strong> pay no setup or installation fee. From November 1, a one-time installation fee applies. Launch pricing on plans also rises after that — lock in your rate now, keep it for life.</p>
   </div>
 </section>
 
@@ -927,7 +841,7 @@
       <div class="contact-info reveal">
         <div class="item">
           <div class="ic">@</div>
-          <div><h4>Email</h4><p><a href="mailto:sales@smarthospitalqueue.com">sales@smarthospitalqueue.com</a></p></div>
+          <div><h4>Email</h4><p><a href="mailto:hello@smarthospitalqueue.com">hello@smarthospitalqueue.com</a></p></div>
         </div>
         <div class="item">
           <a href="https://wa.me/919597899960" target="_blank" rel="noopener" style="display:flex;gap:14px;align-items:center;text-decoration:none;color:inherit;">
@@ -1022,7 +936,7 @@
     <div class="foot-links">
       <a href="#problem">Why it matters</a>
       <a href="#how">How it works</a>
-      <a href="#pricing">Pricing</a>
+      <a href="#pricing">Plans</a>
       <a href="#contact">Contact</a>
     </div>
     <div class="copyright">© 2026 Smart Queue. Built for hospital OPDs. · Same team also runs <a href="https://muthurajjeyabal.github.io/smart-cable-manager/" target="_blank" rel="noopener" style="text-decoration:underline;">Smart Cable Management App</a> and <a href="https://muthurajjeyabal.github.io/jmrapps/" target="_blank" rel="noopener" style="text-decoration:underline;">a suite of everyday apps</a>.</div>
