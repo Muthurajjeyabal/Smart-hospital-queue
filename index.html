@@ -378,6 +378,27 @@
   .perk p{font-size:13px;color:var(--muted);}
   .pricing-foot-note{text-align:center;font-size:12.5px;color:var(--muted);margin-top:22px;}
 
+  /* ---------- Security & Trust ---------- */
+  .security-band{background:var(--board);color:#fff;}
+  .security-band .eyebrow{color:#7FE0C4;}
+  .security-band .eyebrow::before{background:#7FE0C4;}
+  .security-band .section-head h2{color:#fff;}
+  .security-band .section-head p{color:#B9CFCA;}
+  .security-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);overflow:hidden;}
+  @media (max-width:860px){.security-grid{grid-template-columns:1fr;}}
+  .security-item{background:#0E2624;padding:28px 24px;}
+  .security-item .ic{
+    width:42px;height:42px;border-radius:11px;background:rgba(127,224,196,.12);color:#7FE0C4;
+    display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:18px;
+  }
+  .security-item h3{font-size:15.5px;margin-bottom:8px;color:#fff;}
+  .security-item p{font-size:13.5px;color:#9FB8B2;line-height:1.6;}
+  .security-tech-note{
+    margin-top:28px;padding:16px 20px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);
+    font-size:13px;color:#9FB8B2;display:flex;align-items:center;gap:10px;
+  }
+  .security-tech-note strong{color:#DCEDE8;}
+
   /* ---------- Getting Started ---------- */
   .steps-list{max-width:700px;}
   .step-row{
@@ -717,6 +738,42 @@
         <h3>Simple PIN access</h3>
         <p>Reception and doctor logins are protected by a PIN specific to your hospital — no complex accounts to manage.</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SECURITY & TRUST ================= -->
+<section class="security-band">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Security &amp; trust</span>
+      <h2>Your hospital's data stays yours — always</h2>
+      <p>Every hospital on Smart Queue is fully isolated from every other. No shared logins, no data leaks between hospitals, no guesswork.</p>
+    </div>
+    <div class="security-grid">
+      <div class="security-item reveal">
+        <div class="ic">🔒</div>
+        <h3>Data isolation, hospital by hospital</h3>
+        <p>Every hospital's patients, doctors and queues are walled off at the database level. Hospital A can never see Hospital B's data — not even by accident.</p>
+      </div>
+      <div class="security-item reveal">
+        <div class="ic">🧭</div>
+        <h3>Role-based access</h3>
+        <p>Reception, Doctor, Manager and Patient each see only what their role needs — nobody gets more access than their job requires.</p>
+      </div>
+      <div class="security-item reveal">
+        <div class="ic">🔑</div>
+        <h3>PIN-protected staff logins</h3>
+        <p>Reception and Doctor screens are locked behind a PIN unique to your hospital, verified securely on the server — never stored in the app itself.</p>
+      </div>
+      <div class="security-item reveal">
+        <div class="ic">🛡️</div>
+        <h3>Encrypted, always</h3>
+        <p>Every connection runs over HTTPS. Your hospital's data is encrypted in transit from the moment it leaves the screen.</p>
+      </div>
+    </div>
+    <div class="security-tech-note reveal">
+      🗄️ Built on <strong>PostgreSQL with Row Level Security</strong> — the same database technology trusted by large-scale platforms worldwide, enforcing hospital isolation at the database layer itself, not just in the app.
     </div>
   </div>
 </section>
