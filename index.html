@@ -180,6 +180,10 @@
   .plan li{padding:6px 0;padding-left:16px;position:relative;}
   .plan li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--primary);position:absolute;left:0;top:12px;}
   .plan .btn{margin-top:auto;}
+  .plan .amount{font-family:var(--display);font-size:32px;font-weight:700;letter-spacing:-.03em;color:var(--ink);margin:12px 0 4px;line-height:1;}
+  .plan .amount span{font-family:var(--sans);font-size:14px;font-weight:500;color:var(--muted);letter-spacing:0;}
+  .plan .annual{font-size:13px;color:var(--muted);margin:0 0 4px;}
+  .plan-note{margin-top:18px;font-size:13px;color:var(--muted);}
   .demo-box{background:#081617;color:#DCEDE8;border-radius:20px;padding:32px;margin-top:36px;border:1px solid #1E4642;}
   .demo-box h3{color:#fff;font-size:1.35rem;margin:10px 0 8px;}
   .demo-box p{color:#9FB8B2;font-size:14.5px;line-height:1.65;}
@@ -576,49 +580,58 @@
   <div class="wrap">
     <div class="section-head reveal">
       <span class="eyebrow">Plans</span>
-      <h2>Priced around the floor you run — not a vanity package</h2>
-      <p>No public rate card yet. On a demo we map doctors, OPD volume and whether you need one site or several. Then you get a written number.</p>
+      <h2>A written number. No package theatre.</h2>
+      <p>Queue software only — not a full hospital system. GST extra. Billed monthly or annually.</p>
     </div>
     <div class="plan-grid">
       <div class="plan reveal">
         <div class="who">Clinic</div>
-        <h3>Single practice</h3>
-        <p>One location, a short doctor list, reception that still knows every face.</p>
+        <h3>1–3 doctors</h3>
+        <p class="amount">₹999 <span>/ month</span></p>
+        <p class="annual">₹9,990 / year</p>
+        <p>One floor, a short consultant list, reception that still knows the faces.</p>
         <ul>
-          <li>Reception, doctor, patient, manager</li>
-          <li>Independent queue per doctor</li>
+          <li>Reception, doctor, patient and manager screens</li>
+          <li>Unlimited tokens</li>
+          <li>One reception login</li>
           <li>Browser-only rollout</li>
         </ul>
-        <a href="#contact" class="btn btn-ghost">Request clinic demo</a>
+        <a href="#contact" class="btn btn-ghost">Request a clinic demo</a>
       </div>
       <div class="plan featured reveal">
-        <div class="who">Hospital OPD</div>
-        <h3>Multi-doctor floor</h3>
-        <p>The common case: several consultants, a busy reception, and a waiting room that spills into the corridor.</p>
+        <div class="who">Polyclinic</div>
+        <h3>4–10 doctors</h3>
+        <p class="amount">₹1,999 <span>/ month</span></p>
+        <p class="annual">₹19,990 / year</p>
+        <p>Several consultants, a busier desk, and a manager who wants the week on paper.</p>
         <ul>
           <li>Everything in Clinic</li>
-          <li>Department-level queues</li>
+          <li>Up to three reception logins</li>
+          <li>Manager reports as PDF and CSV</li>
           <li>Emergency priority and pause</li>
-          <li>Manager history and PIN control</li>
         </ul>
-        <a href="#contact" class="btn btn-primary">Request hospital demo</a>
+        <a href="#contact" class="btn btn-primary">Request a demo</a>
       </div>
       <div class="plan reveal">
-        <div class="who">Group</div>
-        <h3>More than one site</h3>
-        <p>Same product language across branches, with isolation kept hospital by hospital.</p>
+        <div class="who">Hospital OPD</div>
+        <h3>11+ doctors</h3>
+        <p class="amount">₹3,999 <span>/ month</span></p>
+        <p class="annual">Scoped on a call</p>
+        <p>Multi-department floors and groups. Same product, tighter onboarding.</p>
         <ul>
-          <li>Everything in Hospital OPD</li>
-          <li>Separate hospital codes per site</li>
-          <li>Shared onboarding for the group admin</li>
+          <li>Everything in Polyclinic</li>
+          <li>Higher doctor and staff caps</li>
+          <li>Setup call included</li>
+          <li>Priority WhatsApp line</li>
         </ul>
         <a href="#contact" class="btn btn-ghost">Talk to us</a>
       </div>
     </div>
+    <p class="plan-note reveal">Prices exclude 18% GST. Annual billing is ten months. Limits are enforced on the hospital record — they are not honour-system labels.</p>
     <div class="founding reveal">
       <div>
-        <h3>Founding hospital programme</h3>
-        <p>Smart Queue is in early rollout. We are not going to stamp imaginary client logos on this site. If you are an OPD that still runs on paper, you get setup support and a direct line to the people who built it — in exchange for honest floor feedback after go-live.</p>
+        <h3>Founding programme</h3>
+        <p>Early OPDs still on paper tokens get setup support and a direct line — in exchange for honest floor feedback. Opening terms are confirmed on the demo. We do not publish invented client marks.</p>
       </div>
       <a href="#contact" class="btn btn-primary">Apply for onboarding</a>
     </div>
