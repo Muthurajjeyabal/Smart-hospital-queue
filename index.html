@@ -2,7 +2,7 @@
 <html lang="en-IN">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
 <title>Smart Queue — Hospital Queue Management Software</title>
 <meta name="description" content="Hospital queue software for Indian OPDs. Live tokens, smart wait estimates, and four screens in sync — reception, doctor, patient, manager. Set up in one afternoon." />
 <meta name="keywords" content="hospital queue management, OPD token system, clinic queue software India, live token display, patient wait time" />
@@ -61,7 +61,8 @@
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   html{scroll-behavior:smooth;}
-  body{background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  html{overflow-x:clip;}
+  body{background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased;padding-top:calc(72px + env(safe-area-inset-top, 0px));}
   h1,h2,h3,.display{font-family:'Space Grotesk',system-ui,sans-serif;}
   .mono{font-family:'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums;}
   a{color:inherit;text-decoration:none;}
@@ -76,8 +77,8 @@
   .btn-ghost:hover{border-color:var(--primary);color:var(--primary);}
   .btn-light{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.22);}
   .btn-light:hover{background:rgba(255,255,255,.16);}
-  header{position:sticky;top:0;z-index:50;background:rgba(245,247,246,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);}
-  .nav{display:flex;align-items:center;justify-content:space-between;height:72px;}
+  header{position:fixed;top:0;left:0;right:0;z-index:80;background:rgba(245,247,246,.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top, 0px);}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:72px;gap:10px;}
   .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px;}
   .logo-mark{width:32px;height:32px;border-radius:9px;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;}
   .nav-links{display:flex;align-items:center;gap:28px;font-size:14.5px;font-weight:500;color:var(--muted);}
@@ -88,6 +89,9 @@
   @media (max-width:900px){
     .nav-links,.nav-cta .btn-ghost{display:none;}
     .nav-toggle{display:block;}
+    .nav-cta{order:2;margin-left:auto;}
+    .nav-toggle{order:3;}
+    .nav-cta .btn-primary{padding:10px 16px;font-size:13.5px;}
   }
   .hero{background:radial-gradient(120% 140% at 20% -10%, #123632 0%, var(--board) 55%);color:#fff;padding:64px 0 0;position:relative;overflow:hidden;}
   .hero::before{content:'';position:absolute;top:-180px;right:-140px;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,rgba(40,227,181,.28) 0%,rgba(40,227,181,0) 68%);pointer-events:none;}
@@ -172,7 +176,14 @@
   .security-item p{font-size:13.5px;color:#9FB8B2;line-height:1.6;}
   .security-tech-note{margin-top:28px;padding:16px 20px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);font-size:13px;color:#9FB8B2;}
   .security-tech-note strong{color:#DCEDE8;}
-  .plan-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .plan-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;}
+  @media (max-width:960px){
+    .plan-grid{grid-template-columns:1fr;max-width:440px;margin:0 auto;}
+    .plan .amount{font-size:28px;}
+    .plan .amount span{display:inline;}
+    section{padding:56px 0;}
+    .wrap{padding:0 16px;}
+  }
   .plan{display:flex;flex-direction:column;}
   .plan.featured{border-color:var(--primary);box-shadow:0 16px 40px -24px rgba(15,110,92,.45);}
   .plan .who{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--primary);margin-bottom:10px;}
@@ -215,7 +226,7 @@
   form{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:28px;}
   .field{margin-bottom:16px;}
   .field label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;}
-  .field input,.field select{width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:9px;font-size:14px;font-family:inherit;background:#FAFCFB;}
+  .field input,.field select{width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:9px;font-size:16px;font-family:inherit;background:#FAFCFB;}
   form .btn-primary{width:100%;}
   .note{font-size:12px;color:var(--muted);margin-top:12px;text-align:center;line-height:1.5;}
   footer{border-top:1px solid var(--line);padding:40px 0 28px;background:var(--paper);}
