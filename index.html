@@ -177,6 +177,20 @@
   .plan li{padding:6px 0;padding-left:16px;position:relative;}
   .plan li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--primary);position:absolute;left:0;top:12px;}
   .plan .btn{margin-top:auto;}
+  .demo-box{background:#081617;color:#DCEDE8;border-radius:20px;padding:32px;margin-top:36px;border:1px solid #1E4642;}
+  .demo-box h3{color:#fff;font-size:1.35rem;margin:10px 0 8px;}
+  .demo-box p{color:#9FB8B2;font-size:14.5px;line-height:1.65;}
+  .demo-creds{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:22px 0;}
+  @media (max-width:640px){.demo-creds{grid-template-columns:1fr;}}
+  .cred{background:#0E2624;border:1px solid #1E4642;border-radius:12px;padding:14px 16px;}
+  .cred span{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#7FA69D;margin-bottom:4px;}
+  .cred b{font-family:'IBM Plex Mono',monospace;font-size:16px;color:#7FE0C4;font-weight:600;}
+  .demo-steps{list-style:none;margin:8px 0 20px;}
+  .demo-steps li{padding:8px 0 8px 22px;position:relative;font-size:14.5px;color:#DCEDE8;line-height:1.5;}
+  .demo-steps li::before{content:attr(data-n);position:absolute;left:0;color:#7FE0C4;font-family:'IBM Plex Mono',monospace;font-size:12px;top:10px;}
+  .demo-links{display:flex;flex-wrap:wrap;gap:10px;}
+  .demo-links a{font-size:13.5px;font-weight:600;color:#081617;background:#7FE0C4;padding:10px 14px;border-radius:999px;}
+  .demo-note{font-size:13px;color:#7FA69D;margin-top:16px;}
   .founding{background:var(--primary-light);border:1px solid #C5E4DA;border-radius:18px;padding:28px 32px;display:flex;justify-content:space-between;gap:24px;align-items:center;flex-wrap:wrap;margin-top:28px;}
   .founding h3{font-size:20px;margin-bottom:6px;}
   .founding p{color:var(--muted);font-size:14.5px;max-width:640px;line-height:1.6;}
@@ -227,6 +241,7 @@
     <nav class="nav-links">
       <a href="#problem">Why it matters</a>
       <a href="#how">Product</a>
+      <a href="#demo">Live demo</a>
       <a href="#security">Security</a>
       <a href="#pricing">Plans</a>
       <a href="#contact">Contact</a>
@@ -241,6 +256,7 @@
     <div style="display:flex;flex-direction:column;gap:14px;font-size:15px;font-weight:500;">
       <a href="#problem">Why it matters</a>
       <a href="#how">Product</a>
+      <a href="#demo">Live demo</a>
       <a href="#security">Security</a>
       <a href="#pricing">Plans</a>
       <a href="#contact" class="btn btn-primary" style="margin-top:6px;">Book a demo</a>
@@ -401,6 +417,29 @@
         </ul>
         <div class="role-foot"><span>Manager view</span><a href="https://app.smarthospitalqueue.com/manager.html" target="_blank" rel="noopener">Open product →</a></div>
       </article>
+    </div>
+
+    <div class="demo-box reveal" id="demo">
+      <span class="eyebrow" style="color:#7FE0C4;">Try it yourself</span>
+      <h3>Open the real product — not a video mock</h3>
+      <p>This is a shared sandbox hospital. Anyone on the internet can use it, so treat it as throwaway data. Do not enter a real patient’s name.</p>
+      <div class="demo-creds">
+        <div class="cred"><span>Hospital code</span><b>demo-hospital-6rf</b></div>
+        <div class="cred"><span>Manager PIN</span><b>9016</b></div>
+      </div>
+      <ol class="demo-steps">
+        <li data-n="1.">Open Manager. Enter the code and PIN. Create a doctor and a reception login the same way a hospital would on day one.</li>
+        <li data-n="2.">Open Reception with the PIN you just set. Register yourself using <em>your</em> phone number and issue a token.</li>
+        <li data-n="3.">Open Patient. Same hospital code, then that same phone number — no extra password. That is the patient login.</li>
+        <li data-n="4.">Open Doctor and call Next. Watch the patient screen move.</li>
+      </ol>
+      <div class="demo-links">
+        <a href="https://app.smarthospitalqueue.com/manager.html" target="_blank" rel="noopener">Manager</a>
+        <a href="https://app.smarthospitalqueue.com/reception.html" target="_blank" rel="noopener">Reception</a>
+        <a href="https://app.smarthospitalqueue.com/doctor.html" target="_blank" rel="noopener">Doctor</a>
+        <a href="https://app.smarthospitalqueue.com/patient.html" target="_blank" rel="noopener">Patient</a>
+      </div>
+      <p class="demo-note">Sandbox gets messy. If doctors vanish or PINs change, write to us — we reset it. This is not a customer hospital.</p>
     </div>
   </div>
 </section>
@@ -603,7 +642,7 @@
       </div>
       <div class="faq reveal">
         <h3>Will patients need an app?</h3>
-        <p>No. Patient view is a browser link. Reception and doctors also work in the browser.</p>
+        <p>No. Patient view is a browser link. They sign in with the hospital code and the same phone number reception used to register them — nothing to download.</p>
       </div>
       <div class="faq reveal">
         <h3>Can we see it before we pay?</h3>
@@ -660,7 +699,7 @@
           <div class="ic">→</div>
           <div>
             <h4>Inspect the product now</h4>
-            <p>Use the four view links above. For a guided walkthrough with your doctor list, send the form.</p>
+            <p>Use the live sandbox in the Product section — hospital code and manager PIN are on the page. For a walkthrough on your OPD list, send the form.</p>
           </div>
         </div>
       </div>
