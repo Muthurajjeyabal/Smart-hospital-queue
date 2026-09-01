@@ -428,10 +428,11 @@
         <div class="cred"><span>Manager PIN</span><b>9016</b></div>
       </div>
       <ol class="demo-steps">
-        <li data-n="1.">Open Manager. Enter the code and PIN. Create a doctor and a reception login the same way a hospital would on day one.</li>
-        <li data-n="2.">Open Reception with the PIN you just set. Register yourself using <em>your</em> phone number and issue a token.</li>
-        <li data-n="3.">Open Patient. Same hospital code, then that same phone number — no extra password. That is the patient login.</li>
-        <li data-n="4.">Open Doctor and call Next. Watch the patient screen move.</li>
+        <li data-n="1.">Log in to the manager account with the hospital code and manager PIN.</li>
+        <li data-n="2.">Create a doctor and a reception user. Note the username and PIN issued for each.</li>
+        <li data-n="3.">Log in to Reception with that reception username and PIN.</li>
+        <li data-n="4.">Book the patient with their mobile number. A token is issued and appears on every login — reception, doctor, patient, manager.</li>
+        <li data-n="5.">The patient logs in with that same mobile number and sees their token and estimated wait.</li>
       </ol>
       <div class="demo-links">
         <a href="https://app.smarthospitalqueue.com/manager.html" target="_blank" rel="noopener">Manager</a>
@@ -642,7 +643,7 @@
       </div>
       <div class="faq reveal">
         <h3>Will patients need an app?</h3>
-        <p>No. Patient view is a browser link. They sign in with the hospital code and the same phone number reception used to register them — nothing to download.</p>
+        <p>No. Patient view is a browser link. They sign in with the hospital code and the mobile number reception used when booking them — nothing to download.</p>
       </div>
       <div class="faq reveal">
         <h3>Can we see it before we pay?</h3>
